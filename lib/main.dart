@@ -144,3 +144,49 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
+
+/// Halaman informasi setelah login berhasil
+class UserInfoScreen extends StatelessWidget {
+  final User user; // Menyimpan data user yang sedang login
+
+  const UserInfoScreen({super.key, required this.user}); // Konstruktor UserInfoScreen
+
+  Future<void> _logout() async {
+    await FirebaseAuth.instance.signOut(); // Keluar dari akun Firebase
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Dashboard User'), // Judul halaman user
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout), // Tombol logout di pojok kanan atas
+            onPressed: _logout, // Panggil fungsi logout saat ditekan
+            tooltip: 'Logout', // Keterangan saat kursor diarahkan
+          ),
+        ],
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24), // Jarak tepi halaman
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center, // Posisi di tengah layar
+            children: [
+              const Text(
+                'Login Berhasil!', // Teks status berhasil
+                style: TextStyle(
+                  fontSize: 22, // Ukuran huruf judul
+                  fontWeight: FontWeight.bold, // Cetak tebal
+                ),
+              ),
+              const SizedBox(height: 8), // Jarak antara judul dan email
+              Text('Email: ${user.email ?? "Tidak ada email"}'), // Email user
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
